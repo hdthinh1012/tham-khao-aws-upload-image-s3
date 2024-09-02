@@ -49,6 +49,7 @@ const getSecret: () => Promise<{
     } catch (error) {
         // For a list of exceptions thrown, see
         // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        console.log('getSecret error', error);
         throw error;
     }
     console.log('getSecret return');
