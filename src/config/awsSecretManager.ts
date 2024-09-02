@@ -50,6 +50,7 @@ const getSecret: () => Promise<{
         // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
         throw error;
     }
+    console.log('getSecret return');
     return jsonSecret;
 }
 
