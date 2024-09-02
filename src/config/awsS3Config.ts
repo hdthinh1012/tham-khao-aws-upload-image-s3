@@ -17,7 +17,7 @@ while (jsonSecret.BUCKET_NAME == "") {
         console.log("Waiting for secrets");
     }
     count += 1;
-    if (count == 2000000000) {
+    if (count == 200000000000) {
         console.error("AWS Secret loading failed");
         process.exit(1);
     }
