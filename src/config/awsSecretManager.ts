@@ -41,6 +41,7 @@ const getSecret: () => Promise<{
                 VersionStage: "AWSCURRENT", // VersionStage defaults to AWSCURRENT if unspecified
             })
         );
+        console.log('response getSecret', response);
 
         const secretString = response.SecretString;
         jsonSecret = JSON.parse(secretString as string);

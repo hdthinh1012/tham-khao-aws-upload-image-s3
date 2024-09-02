@@ -1,14 +1,12 @@
 import { Request, Response } from 'express';
-import { getS3 } from '../config/awsS3Config';
-import { getSecret } from '../config/awsSecretManager';
+import { getS3AndSecret } from '../config/awsS3Config';
 
 import { ListObjectsV2Command, GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 export const getAllImages = async (req: Request, res: Response) => {
     try {
-        const jsonSecret = await getSecret();
-        const s3 = await getS3();
+        const { s3, jsonSecret } = await getS3AndSecret();
 
         const listObjectRequests = new ListObjectsV2Command({
             Bucket: jsonSecret.BUCKET_NAME ? jsonSecret.BUCKET_NAME : "",
@@ -41,8 +39,7 @@ export const getAllImages = async (req: Request, res: Response) => {
 
 export const uploadImage = async (req: Request, res: Response) => {
     try {
-        const jsonSecret = await getSecret();
-        const s3 = await getS3();
+        const { s3, jsonSecret } = await getS3AndSecret();
 
         const file = req.file;
         const fileName = Date.now() + "_" + file?.originalname;
@@ -66,8 +63,7 @@ export const uploadImage = async (req: Request, res: Response) => {
 
 export const deleteImage = async (req: Request, res: Response) => {
     try {
-        const jsonSecret = await getSecret();
-        const s3 = await getS3();
+        const { s3, jsonSecret } = await getS3AndSecret();
 
         const { fileName } = req.params;
         const deleteObjectRequest = new DeleteObjectCommand({
