@@ -23,6 +23,7 @@ let jsonSecret: {
     BUCKET_NAME: "",
 };
 const getSecret = async () => {
+    console.log('getSecret run')
     let response;
     try {
         response = await client.send(
@@ -34,6 +35,7 @@ const getSecret = async () => {
 
         const secretString = response.SecretString;
         jsonSecret = JSON.parse(secretString as string);
+        console.log('getSecret return')
     } catch (error) {
         // For a list of exceptions thrown, see
         // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
