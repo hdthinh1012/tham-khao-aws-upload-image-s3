@@ -8,9 +8,6 @@ dotenv.config();
 const app: Express = express();
 const port = Number(process.env.PORT) || 80;
 
-console.log(process.env.PORT);
-console.log(Number(process.env.PORT));
-
 app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {

@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc --outDir build",
     "start": "node build/server.js",
-    "dev": "nodemon",
+    "dev": "nodemon build/server.js",
+    "dev:debug": "nodemon --exec \"node --inspect=9229 -r dotenv/config -r ts-node/register src/server.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

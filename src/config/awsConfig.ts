@@ -1,4 +1,7 @@
 import { S3Client } from '@aws-sdk/client-s3';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export let jsonSecret = {
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,

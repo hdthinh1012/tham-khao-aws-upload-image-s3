@@ -10,8 +10,6 @@ const routes_1 = require("./routes");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = Number(process.env.PORT) || 80;
-console.log(process.env.PORT);
-console.log(Number(process.env.PORT));
 app.use((0, cors_1.default)());
 app.get("/", (req, res) => {
     res.send("Express + TypeScript Server");
