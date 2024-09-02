@@ -13,6 +13,7 @@ const client = new SecretsManagerClient({
     region: "us-east-1",
 });
 
+let isSecretGet: boolean = false;
 let jsonSecret: {
     AWS_ACCESS_KEY_ID: string,
     AWS_SECRET_ACCESS_KEY: string,
@@ -22,8 +23,16 @@ let jsonSecret: {
     AWS_SECRET_ACCESS_KEY: "",
     BUCKET_NAME: "",
 };
-const getSecret = async () => {
-    console.log('getSecret run')
+
+const getSecret: () => Promise<{
+    AWS_ACCESS_KEY_ID: string,
+    AWS_SECRET_ACCESS_KEY: string,
+    BUCKET_NAME: string,
+}> = async () => {
+    console.log('getSecret run');
+    if (!isSecretGet) {
+        return jsonSecret;
+    }
     let response;
     try {
         response = await client.send(
@@ -35,14 +44,13 @@ const getSecret = async () => {
 
         const secretString = response.SecretString;
         jsonSecret = JSON.parse(secretString as string);
-        console.log('getSecret return')
+        isSecretGet = true;
     } catch (error) {
         // For a list of exceptions thrown, see
         // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
         throw error;
     }
+    return jsonSecret;
 }
 
-getSecret();
-
-export { jsonSecret };
+export { getSecret };

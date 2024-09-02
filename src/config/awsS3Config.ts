@@ -1,6 +1,6 @@
 import { S3Client } from '@aws-sdk/client-s3';
 import dotenv from "dotenv";
-import { jsonSecret } from "./awsSecretManager";
+import { getSecret } from "./awsSecretManager";
 
 dotenv.config();
 
@@ -10,10 +10,19 @@ dotenv.config();
 //     BUCKET_NAME: process.env.BUCKET_NAME,
 // };
 
-export const s3 = new S3Client({
-    region: "us-east-1",
-    credentials: {
-        accessKeyId: jsonSecret.AWS_ACCESS_KEY_ID ? jsonSecret.AWS_ACCESS_KEY_ID : "",
-        secretAccessKey: jsonSecret.AWS_SECRET_ACCESS_KEY ? jsonSecret.AWS_SECRET_ACCESS_KEY : ""
-    }
-});
+let isS3Get: boolean = false;
+let s3Client: S3Client = new S3Client();
+
+export const getS3 = async () => {
+    const jsonSecret = await getSecret();
+    if (isS3Get) return s3Client;
+    isS3Get = true;
+    s3Client = new S3Client({
+        region: "us-east-1",
+        credentials: {
+            accessKeyId: jsonSecret.AWS_ACCESS_KEY_ID ? jsonSecret.AWS_ACCESS_KEY_ID : "",
+            secretAccessKey: jsonSecret.AWS_SECRET_ACCESS_KEY ? jsonSecret.AWS_SECRET_ACCESS_KEY : ""
+        }
+    });
+    return s3Client;
+}
