@@ -10,19 +10,6 @@ dotenv.config();
 //     BUCKET_NAME: process.env.BUCKET_NAME,
 // };
 
-let count = 0;
-
-while (jsonSecret.BUCKET_NAME == "") {
-    if (count == 0) {
-        console.log("Waiting for secrets");
-    }
-    count += 1;
-    if (count == 200000000000) {
-        console.error("AWS Secret loading failed");
-        process.exit(1);
-    }
-}
-
 export const s3 = new S3Client({
     region: "us-east-1",
     credentials: {
