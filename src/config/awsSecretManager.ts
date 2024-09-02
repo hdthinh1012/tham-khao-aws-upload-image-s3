@@ -25,7 +25,7 @@ const getSecret: () => Promise<{
 }> = async () => {
     console.log('getSecret run');
     try {
-        if (!isSecretGet) {
+        if (isSecretGet) {
             return jsonSecret;
         }
         let response;
