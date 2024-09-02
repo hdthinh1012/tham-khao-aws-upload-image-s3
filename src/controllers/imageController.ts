@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { s3, jsonSecret } from '../config/awsConfig';
+import { s3 } from '../config/awsS3Config';
+import { jsonSecret } from '../config/awsSecretManager';
 
 import { ListObjectsV2Command, GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
