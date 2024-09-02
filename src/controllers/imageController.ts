@@ -13,7 +13,9 @@ export const getAllImages = async (req: Request, res: Response) => {
             Prefix: "images/"
         });
 
-        const data = await s3?.send(listObjectRequests);
+        const data = await s3.send(listObjectRequests);
+        console.log('getAllImages jsonSecret', jsonSecret);
+        console.log('getAllImages data', data);
         const urls = data.Contents?.map(async (item) => {
             const getObjectCommand = new GetObjectCommand({
                 Bucket: jsonSecret.BUCKET_NAME,
