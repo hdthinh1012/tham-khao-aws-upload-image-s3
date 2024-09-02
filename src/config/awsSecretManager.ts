@@ -7,12 +7,6 @@ import {
     GetSecretValueCommand,
 } from "@aws-sdk/client-secrets-manager";
 
-const secret_name = "upload-image-to-s3-secrets";
-
-const client = new SecretsManagerClient({
-    region: "us-east-1",
-});
-
 let isSecretGet: boolean = false;
 let jsonSecret: {
     AWS_ACCESS_KEY_ID: string,
@@ -30,11 +24,15 @@ const getSecret: () => Promise<{
     BUCKET_NAME: string,
 }> = async () => {
     console.log('getSecret run');
-    if (!isSecretGet) {
-        return jsonSecret;
-    }
-    let response;
     try {
+        if (!isSecretGet) {
+            return jsonSecret;
+        }
+        let response;
+        const secret_name = "upload-image-to-s3-secrets";
+        const client = new SecretsManagerClient({
+            region: "us-east-1",
+        });
         response = await client.send(
             new GetSecretValueCommand({
                 SecretId: secret_name,
@@ -46,14 +44,14 @@ const getSecret: () => Promise<{
         const secretString = response.SecretString;
         jsonSecret = JSON.parse(secretString as string);
         isSecretGet = true;
+        console.log('getSecret return');
+        return jsonSecret;
     } catch (error) {
         // For a list of exceptions thrown, see
         // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
         console.log('getSecret error', error);
         throw error;
     }
-    console.log('getSecret return');
-    return jsonSecret;
 }
 
 export { getSecret };

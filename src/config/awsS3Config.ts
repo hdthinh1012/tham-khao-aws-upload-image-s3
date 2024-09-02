@@ -14,15 +14,22 @@ let isS3Get: boolean = false;
 let s3: S3Client = new S3Client();
 
 export const getS3AndSecret = async () => {
-    const jsonSecret = await getSecret();
-    if (isS3Get) return { s3, jsonSecret };
-    isS3Get = true;
-    s3 = new S3Client({
-        region: "us-east-1",
-        credentials: {
-            accessKeyId: jsonSecret.AWS_ACCESS_KEY_ID ? jsonSecret.AWS_ACCESS_KEY_ID : "",
-            secretAccessKey: jsonSecret.AWS_SECRET_ACCESS_KEY ? jsonSecret.AWS_SECRET_ACCESS_KEY : ""
-        }
-    });
-    return { s3, jsonSecret };
+    try {
+        const jsonSecret = await getSecret();
+        if (isS3Get) return { s3, jsonSecret };
+        s3 = new S3Client({
+            region: "us-east-1",
+            credentials: {
+                accessKeyId: jsonSecret.AWS_ACCESS_KEY_ID ? jsonSecret.AWS_ACCESS_KEY_ID : "",
+                secretAccessKey: jsonSecret.AWS_SECRET_ACCESS_KEY ? jsonSecret.AWS_SECRET_ACCESS_KEY : ""
+            }
+        });
+        isS3Get = true;
+        return { s3, jsonSecret };
+    } catch (error) {
+        // For a list of exceptions thrown, see
+        // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        console.log('getS3AndSecret error', error);
+        throw error;
+    }
 }
